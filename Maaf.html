@@ -1,0 +1,1316 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>buat picell 💙</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Pacifico&display=swap" rel="stylesheet" />
+
+  <style>
+    /* =============================================
+       RESET & BASE
+    ============================================= */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    :root {
+      --blue:       #a8d8ff;
+      --blue-dark:  #7ec8f5;
+      --blue-deep:  #4fa8e0;
+      --white:      #ffffff;
+      --soft:       #f0f8ff;
+      --text:       #2c5f82;
+      --text-light: #5b8fad;
+      --accent:     #ff8fab;
+      --accent2:    #ffd166;
+      --radius:     20px;
+      --shadow:     0 8px 32px rgba(44,95,130,0.15);
+    }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Nunito', sans-serif;
+      background: var(--blue);
+      color: var(--text);
+      touch-action: none;
+    }
+
+    /* =============================================
+       SECTION WRAPPER – fullscreen slides
+    ============================================= */
+    #app {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .section {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 28px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.55s ease, transform 0.55s ease;
+      transform: translateY(40px);
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .section.active {
+      opacity: 1;
+      pointer-events: all;
+      transform: translateY(0);
+    }
+
+    .section.exit {
+      opacity: 0;
+      transform: translateY(-40px);
+    }
+
+    /* Bubble background decoration */
+    .section::before {
+      content: '';
+      position: absolute;
+      width: 320px;
+      height: 320px;
+      background: rgba(255,255,255,0.25);
+      border-radius: 50%;
+      top: -80px;
+      right: -80px;
+      pointer-events: none;
+    }
+    .section::after {
+      content: '';
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      background: rgba(255,255,255,0.18);
+      border-radius: 50%;
+      bottom: -60px;
+      left: -50px;
+      pointer-events: none;
+    }
+
+    /* =============================================
+       TYPOGRAPHY
+    ============================================= */
+    .big-title {
+      font-family: 'Pacifico', cursive;
+      font-size: clamp(2rem, 8vw, 3rem);
+      color: var(--white);
+      line-height: 1.3;
+      text-shadow: 0 2px 12px rgba(44,95,130,0.3);
+    }
+
+    .main-text {
+      font-size: clamp(1.15rem, 5vw, 1.5rem);
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.6;
+      max-width: 360px;
+    }
+
+    .sub-text {
+      font-size: clamp(0.95rem, 4vw, 1.15rem);
+      font-weight: 600;
+      color: var(--text-light);
+      line-height: 1.6;
+      max-width: 360px;
+    }
+
+    .emoji-big {
+      font-size: clamp(3rem, 12vw, 5rem);
+      display: block;
+      margin-bottom: 12px;
+    }
+
+    /* =============================================
+       BUTTONS
+    ============================================= */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 14px 32px;
+      border-radius: 50px;
+      border: none;
+      cursor: pointer;
+      font-family: 'Nunito', sans-serif;
+      font-size: 1rem;
+      font-weight: 800;
+      transition: transform 0.18s, box-shadow 0.18s, opacity 0.18s;
+      outline: none;
+      user-select: none;
+    }
+
+    .btn:active { transform: scale(0.93); }
+
+    .btn-primary {
+      background: var(--white);
+      color: var(--text);
+      box-shadow: 0 4px 18px rgba(44,95,130,0.25);
+    }
+    .btn-primary:hover { box-shadow: 0 6px 24px rgba(44,95,130,0.35); transform: translateY(-2px); }
+
+    .btn-accent {
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 4px 18px rgba(255,143,171,0.4);
+    }
+    .btn-accent:hover { transform: translateY(-2px); }
+
+    .btn-soft {
+      background: rgba(255,255,255,0.55);
+      color: var(--text);
+      box-shadow: 0 2px 10px rgba(44,95,130,0.12);
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 28px;
+    }
+
+    /* =============================================
+       CARD
+    ============================================= */
+    .card {
+      background: rgba(255,255,255,0.65);
+      backdrop-filter: blur(12px);
+      border-radius: var(--radius);
+      padding: 28px 24px;
+      box-shadow: var(--shadow);
+      width: 100%;
+      max-width: 380px;
+    }
+
+    /* =============================================
+       FADE-IN LINES (section 1)
+    ============================================= */
+    .fadeline {
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+      margin-bottom: 10px;
+    }
+    .fadeline.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* =============================================
+       SECTION 1 – OPENING
+    ============================================= */
+    #s1 { background: linear-gradient(145deg, #a8d8ff 0%, #cdeeff 100%); }
+
+    /* =============================================
+       SECTION 2 – PERKENALAN
+    ============================================= */
+    #s2 { background: linear-gradient(145deg, #b8deff 0%, #e0f3ff 100%); }
+
+    .line-reveal {
+      opacity: 0;
+      transform: translateX(-20px);
+      animation: lineIn 0.5s ease forwards;
+    }
+    @keyframes lineIn {
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    /* =============================================
+       SECTION 3 – APOLOGY
+    ============================================= */
+    #s3 { background: linear-gradient(145deg, #a8d8ff 0%, #d4eeff 100%); }
+
+    #btn-gamau {
+      position: relative;
+      transition: font-size 0.3s, padding 0.3s, transform 0.3s;
+    }
+
+    /* =============================================
+       CONFETTI
+    ============================================= */
+    #confetti-container {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+      overflow: hidden;
+    }
+
+    .confetti-piece {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      top: -10px;
+      opacity: 0.9;
+      border-radius: 2px;
+      animation: confettiFall linear forwards;
+    }
+
+    @keyframes confettiFall {
+      to {
+        transform: translateY(110vh) rotate(720deg);
+        opacity: 0;
+      }
+    }
+
+    /* =============================================
+       POPUP OVERLAY
+    ============================================= */
+    .popup-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(44,95,130,0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+
+    .popup-overlay.show {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .popup-box {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 28px 32px;
+      text-align: center;
+      box-shadow: 0 12px 40px rgba(44,95,130,0.3);
+      transform: scale(0.8);
+      transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
+      max-width: 300px;
+    }
+
+    .popup-overlay.show .popup-box {
+      transform: scale(1);
+    }
+
+    .popup-box p {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-top: 8px;
+    }
+
+    /* =============================================
+       SECTION 4 – MINI GAME (Catch the Heart)
+    ============================================= */
+    #s4 { background: linear-gradient(145deg, #9dd4ff 0%, #cde8ff 100%); }
+
+    #game-area {
+      position: relative;
+      width: 100%;
+      max-width: 380px;
+      height: 280px;
+      background: rgba(255,255,255,0.4);
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 2px solid rgba(255,255,255,0.6);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .heart-drop {
+      position: absolute;
+      font-size: 1.8rem;
+      cursor: pointer;
+      animation: dropDown linear forwards;
+      pointer-events: all;
+      filter: drop-shadow(0 2px 4px rgba(255,100,100,0.4));
+    }
+
+    @keyframes dropDown {
+      from { top: -40px; }
+      to   { top: 110%; }
+    }
+
+    #game-hud {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      max-width: 380px;
+      margin-bottom: 10px;
+      padding: 10px 18px;
+      background: rgba(255,255,255,0.5);
+      border-radius: 50px;
+    }
+
+    #game-hud span {
+      font-weight: 800;
+      font-size: 1rem;
+      color: var(--text);
+    }
+
+    #timer-bar-wrap {
+      width: 100%;
+      max-width: 380px;
+      height: 8px;
+      background: rgba(255,255,255,0.4);
+      border-radius: 10px;
+      margin-top: 10px;
+      overflow: hidden;
+    }
+
+    #timer-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      border-radius: 10px;
+      transition: width 1s linear;
+    }
+
+    /* =============================================
+       SECTION 5 – FUN / CATATAN
+    ============================================= */
+    #s5 { background: linear-gradient(145deg, #a8d8ff 0%, #ddf0ff 100%); }
+
+    #catatan-text {
+      font-size: clamp(1.1rem, 4.5vw, 1.4rem);
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1.7;
+      min-height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 1;
+      transition: opacity 0.35s, transform 0.35s;
+    }
+
+    #catatan-text.fade-out {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+
+    #catatan-text.fade-in {
+      opacity: 1;
+      transform: scale(1.02);
+    }
+
+    .catatan-counter {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-light);
+      margin-top: 8px;
+    }
+
+    /* =============================================
+       SECTION 6 – TODAY PLAN
+    ============================================= */
+    #s6 { background: linear-gradient(145deg, #b0dcff 0%, #e4f4ff 100%); }
+
+    .time-grid {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    .time-btn {
+      padding: 16px 26px;
+      border-radius: var(--radius);
+      border: 2px solid rgba(255,255,255,0.7);
+      background: rgba(255,255,255,0.55);
+      font-family: 'Nunito', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .time-btn:hover,
+    .time-btn.selected {
+      background: var(--white);
+      border-color: var(--blue-deep);
+      box-shadow: 0 4px 16px rgba(44,95,130,0.25);
+      transform: translateY(-2px);
+    }
+
+    .time-btn.selected {
+      color: var(--blue-deep);
+    }
+
+    /* =============================================
+       SECTION 7 – COUNTDOWN
+    ============================================= */
+    #s7 { background: linear-gradient(145deg, #9ecff7 0%, #cce8ff 100%); }
+
+    .countdown-wrap {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      align-items: center;
+      margin: 20px 0;
+    }
+
+    .cd-box {
+      background: rgba(255,255,255,0.65);
+      border-radius: var(--radius);
+      padding: 18px 22px;
+      min-width: 72px;
+      text-align: center;
+      box-shadow: 0 4px 18px rgba(44,95,130,0.18);
+    }
+
+    .cd-num {
+      font-family: 'Pacifico', cursive;
+      font-size: clamp(2rem, 9vw, 3rem);
+      color: var(--text);
+      line-height: 1;
+    }
+
+    .cd-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-light);
+      margin-top: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .cd-sep {
+      font-family: 'Pacifico', cursive;
+      font-size: 2.5rem;
+      color: var(--white);
+      margin-bottom: 12px;
+    }
+
+    #cd-done-msg {
+      display: none;
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--accent);
+      margin-top: 10px;
+      animation: pulse 0.8s infinite alternate;
+    }
+
+    @keyframes pulse {
+      to { transform: scale(1.06); }
+    }
+
+    /* =============================================
+       SECTION 8 – CLOSING
+    ============================================= */
+    #s8 { background: linear-gradient(145deg, #a8d8ff 0%, #e0f3ff 100%); }
+
+    .float-hearts {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .fheart {
+      position: absolute;
+      font-size: 1.5rem;
+      animation: floatUp linear infinite;
+      opacity: 0.7;
+    }
+
+    @keyframes floatUp {
+      0%   { transform: translateY(0) rotate(0deg); opacity: 0.8; }
+      50%  { opacity: 0.5; }
+      100% { transform: translateY(-110vh) rotate(25deg); opacity: 0; }
+    }
+
+    /* =============================================
+       PROGRESS DOTS
+    ============================================= */
+    #progress-dots {
+      position: fixed;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      z-index: 500;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.45);
+      transition: all 0.3s;
+    }
+
+    .dot.active-dot {
+      background: var(--white);
+      height: 22px;
+      border-radius: 4px;
+      box-shadow: 0 0 8px rgba(255,255,255,0.6);
+    }
+
+    /* =============================================
+       SKIP BUTTON
+    ============================================= */
+    #skip-btn {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255,255,255,0.3);
+      border: 1px solid rgba(255,255,255,0.5);
+      color: var(--text);
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 7px 18px;
+      border-radius: 50px;
+      cursor: pointer;
+      z-index: 400;
+      display: none;
+      transition: opacity 0.3s;
+    }
+
+    /* =============================================
+       ANIMATIONS HELPERS
+    ============================================= */
+    @keyframes bounceIn {
+      0%   { transform: scale(0.5); opacity: 0; }
+      70%  { transform: scale(1.08); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes wiggle {
+      0%, 100% { transform: rotate(-4deg); }
+      50%       { transform: rotate(4deg); }
+    }
+
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      50%       { transform: scale(1.15); }
+    }
+
+    .bounce-in {
+      animation: bounceIn 0.5s cubic-bezier(0.34,1.56,0.64,1) forwards;
+    }
+
+    .wiggle { animation: wiggle 0.4s ease; }
+  </style>
+</head>
+<body>
+
+<!-- =============================================
+     CONFETTI CONTAINER
+============================================= -->
+<div id="confetti-container"></div>
+
+<!-- =============================================
+     PROGRESS DOTS
+============================================= -->
+<div id="progress-dots">
+  <div class="dot" data-idx="0"></div>
+  <div class="dot" data-idx="1"></div>
+  <div class="dot" data-idx="2"></div>
+  <div class="dot" data-idx="3"></div>
+  <div class="dot" data-idx="4"></div>
+  <div class="dot" data-idx="5"></div>
+  <div class="dot" data-idx="6"></div>
+  <div class="dot" data-idx="7"></div>
+</div>
+
+<!-- =============================================
+     POPUP MAAFIN
+============================================= -->
+<div class="popup-overlay" id="popup-maafin">
+  <div class="popup-box">
+    <div style="font-size:3rem">🥺</div>
+    <p>makasih ya udah maafin aku!</p>
+    <p style="font-size:0.9rem;color:var(--text-light);margin-top:6px;font-weight:600">Kamu baik banget 💙<br> terimakasih dari orang paling ganteng sedunia</p>
+  </div>
+</div>
+
+<!-- =============================================
+     POPUP FUN (catatan)
+============================================= -->
+<div class="popup-overlay" id="popup-fun">
+  <div class="popup-box" id="popup-fun-box">
+    <div style="font-size:2.5rem" id="popup-fun-emoji">😌</div>
+    <p id="popup-fun-text">tuh kan aku tau 😌</p>
+  </div>
+</div>
+
+<!-- =============================================
+     APP CONTAINER
+============================================= -->
+<div id="app">
+
+  <!-- ==========================================
+       SECTION 1 – OPENING
+  =========================================== -->
+  <section class="section" id="s1">
+    <div style="z-index:1;display:flex;flex-direction:column;align-items:center;gap:10px">
+      <span class="emoji-big">💙</span>
+      <div class="fadeline main-text" id="line1" style="font-family:'Pacifico',cursive;color:var(--white);font-size:clamp(1.8rem,7vw,2.5rem)">Hai Picell...</div>
+      <div class="fadeline sub-text" id="line2">iya manusia pendek yang lagi baca ini 😌</div>
+      <div class="fadeline sub-text" id="line3" style="font-style:italic">aku cuma mau bilang sesuatu…</div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       SECTION 2 – PERKENALAN LUCU
+  =========================================== -->
+  <section class="section" id="s2">
+    <div style="z-index:1;width:100%;max-width:380px">
+      <div class="card">
+        <span class="emoji-big">👀</span>
+        <div class="main-text" style="margin-bottom:20px">
+          <div class="line-reveal" style="animation-delay:0.1s">yang kadang ngeselin…</div>
+          <div class="line-reveal" style="animation-delay:0.5s">kadang random…</div>
+          <div class="line-reveal" style="animation-delay:1s;color:var(--accent)">tapi tetep aku sukaa gimanapun itu 😌</div>
+        </div>
+        <div class="btn-row" style="margin-top:18px">
+          <button class="btn btn-primary" onclick="goTo(2)">lanjut 👉</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       SECTION 3 – APOLOGY
+  =========================================== -->
+  <section class="section" id="s3">
+    <div style="z-index:1;width:100%;max-width:380px">
+      <div class="card">
+        <span class="emoji-big">🙏</span>
+        <div class="main-text" style="margin-bottom:12px">minta maaf ya…</div>
+        <div class="sub-text" style="margin-bottom:6px">
+          aku tau aku salah, dan mungkin ngeselin 😅<br/>
+          tapi beneran—aku nyesel dan ga mau ngulang lagi.
+        </div>
+        <div class="sub-text" style="font-style:italic;margin-top:8px">
+          jadi… maafin aku ya? 🥺
+        </div>
+        <div class="btn-row" style="position:relative;min-height:70px;margin-top:24px" id="apology-btn-area">
+          <button class="btn btn-accent" id="btn-maafin" onclick="onMaafin()">Maafin 😇</button>
+          <button class="btn btn-soft" id="btn-gamau" onclick="onGamau()">Gamau 😤</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       SECTION 4 – MINI GAME (Catch the Heart)
+  =========================================== -->
+  <section class="section" id="s4">
+    <div style="z-index:1;width:100%;max-width:380px;display:flex;flex-direction:column;align-items:center;gap:8px">
+      <div class="main-text" style="margin-bottom:4px">tangkap hatinya! ❤️</div>
+      <div class="sub-text" style="margin-bottom:8px;font-size:0.9rem">klik/tap hati yang jatuh</div>
+
+      <!-- HUD -->
+      <div id="game-hud">
+        <span>❤️ Skor: <b id="score-display">0</b></span>
+        <span>⏰ <b id="timer-display">15</b>s</span>
+      </div>
+
+      <!-- Game Area -->
+      <div id="game-area" ontouchstart="gameAreaTouch(event)">
+        <div id="game-start-msg" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px">
+          <span style="font-size:2.5rem">❤️</span>
+          <span style="font-weight:800;color:var(--text)">Tap di sini untuk mulai!</span>
+        </div>
+      </div>
+
+      <!-- Timer bar -->
+      <div id="timer-bar-wrap"><div id="timer-bar" style="width:100%"></div></div>
+
+      <div id="game-end-msg" style="display:none;text-align:center;margin-top:8px">
+        <div class="main-text" id="game-result-text"></div>
+        <button class="btn btn-primary" style="margin-top:14px" onclick="goTo(4)">lanjut 👉</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       SECTION 5 – FUN / CATATAN TENTANG KAMU
+  =========================================== -->
+  <section class="section" id="s5">
+    <div style="z-index:1;width:100%;max-width:380px;display:flex;flex-direction:column;align-items:center">
+      <div class="main-text" style="margin-bottom:4px">📒 catatan tentang Picell</div>
+      <div class="sub-text" style="font-size:0.9rem;margin-bottom:16px">baca deh, semoga sesuai yaa 👀</div>
+
+      <div class="card" style="padding:32px 24px">
+        <div id="catatan-text">"loading..."</div>
+        <div class="catatan-counter" id="catatan-counter">1 / 9</div>
+
+        <div class="btn-row" style="margin-top:20px;gap:10px">
+          <button class="btn btn-soft" style="font-size:0.9rem;padding:10px 18px" onclick="onCatatanReact('ya')">iya ini aku 😳</button>
+          <button class="btn btn-soft" style="font-size:0.9rem;padding:10px 18px" onclick="onCatatanReact('no')">ga juga 😤</button>
+        </div>
+        <div class="btn-row" style="margin-top:8px">
+          <button class="btn btn-primary" onclick="nextCatatan()">Next 👉</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       SECTION 6 – TODAY PLAN
+  =========================================== -->
+  <section class="section" id="s6">
+    <div style="z-index:1;width:100%;max-width:380px">
+      <div class="card">
+        <span class="emoji-big">🌙</span>
+        <div class="main-text" style="margin-bottom:8px">rencana hari ini yuk!</div>
+        <div class="sub-text">Kita udah planning kemaren<br/>kita nonton + ketawa bareng okayy🎬</div>
+
+        <p style="font-weight:700;color:var(--text);margin-top:22px;margin-bottom:4px">mulai jam berapa?</p>
+        <div class="time-grid" id="time-grid">
+          <button class="time-btn" onclick="selectTime('09:00',this)">09:00</button>
+          <button class="time-btn" onclick="selectTime('10:00',this)">10:00</button>
+          <button class="time-btn" onclick="selectTime('11:00',this)">11:00</button>
+        </div>
+
+        <p id="time-confirm" style="display:none;margin-top:14px;font-weight:700;color:var(--blue-deep);font-size:1rem"></p>
+
+        <div class="btn-row" style="margin-top:20px">
+          <button class="btn btn-primary" id="btn-go-countdown" onclick="goToCountdown()" style="display:none">lihat countdown 🕐</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       SECTION 7 – COUNTDOWN
+  =========================================== -->
+  <section class="section" id="s7">
+    <div style="z-index:1;width:100%;max-width:380px;display:flex;flex-direction:column;align-items:center">
+      <span class="emoji-big">⏳</span>
+      <div class="main-text" style="margin-bottom:4px">udah mau mulai nih!</div>
+      <div class="sub-text" id="cd-target-label" style="margin-bottom:20px">menuju jam 20:00</div>
+
+      <div class="countdown-wrap">
+        <div class="cd-box">
+          <div class="cd-num" id="cd-h">00</div>
+          <div class="cd-label">jam</div>
+        </div>
+        <div class="cd-sep">:</div>
+        <div class="cd-box">
+          <div class="cd-num" id="cd-m">00</div>
+          <div class="cd-label">menit</div>
+        </div>
+        <div class="cd-sep">:</div>
+        <div class="cd-box">
+          <div class="cd-num" id="cd-s">00</div>
+          <div class="cd-label">detik</div>
+        </div>
+      </div>
+
+      <div id="cd-done-msg">🎉 waktunya udah tiba! yuk mulai! 🎉</div>
+
+      <button class="btn btn-primary" style="margin-top:28px" onclick="goTo(7)">lanjut ke penutup 💙</button>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       SECTION 8 – CLOSING
+  =========================================== -->
+  <section class="section" id="s8">
+    <!-- Floating hearts bg -->
+    <div class="float-hearts" id="float-hearts-bg"></div>
+
+    <div style="z-index:1;width:100%;max-width:380px">
+      <div class="card" style="background:rgba(255,255,255,0.7)">
+        <span class="emoji-big" style="animation:heartbeat 1.2s ease infinite">💙</span>
+        <div class="main-text" style="margin-bottom:16px;line-height:1.8">
+          makasih ya udah<br/>bertahan sejauh ini 🥺
+        </div>
+        <div class="sub-text" style="line-height:1.9">
+          aku bakal lebih jaga ke depannya<br/>
+          <span style="font-weight:800;color:var(--text)">dan… jangan lama-lama ngambeknya 😌</span>
+        </div>
+        <div class="sub-text" style="margin-top:18px;font-style:italic;font-size:0.95rem">
+          Maaf yaa kalo agak alayy, semoga picell sukaa 💙
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /#app -->
+
+<!-- =============================================
+     JAVASCRIPT
+============================================= -->
+<script>
+  // ============================================
+  // STATE
+  // ============================================
+  let currentSection = 0;
+  const totalSections = 8;
+  let countdownInterval = null;
+  let selectedTime = null;  // string "HH:MM"
+
+  // ============================================
+  // SECTION NAVIGATION
+  // ============================================
+  function goTo(idx) {
+    if (idx < 0 || idx >= totalSections) return;
+
+    const sections = document.querySelectorAll('.section');
+    const current = sections[currentSection];
+
+    // Exit current
+    current.classList.remove('active');
+    current.classList.add('exit');
+    setTimeout(() => current.classList.remove('exit'), 600);
+
+    currentSection = idx;
+    const next = sections[currentSection];
+    next.classList.add('active');
+
+    updateDots();
+    onSectionEnter(idx);
+  }
+
+  function updateDots() {
+    document.querySelectorAll('.dot').forEach((d, i) => {
+      d.classList.toggle('active-dot', i === currentSection);
+    });
+  }
+
+  // ============================================
+  // SECTION ENTER HOOKS
+  // ============================================
+  function onSectionEnter(idx) {
+    if (idx === 0) initSection1();
+    if (idx === 1) initSection2();
+    if (idx === 3) initGame();
+    if (idx === 4) initCatatan();
+    if (idx === 6) initCountdown();
+    if (idx === 7) initClosing();
+  }
+
+  // ============================================
+  // SECTION 1 – OPENING (fade lines + auto next)
+  // ============================================
+  function initSection1() {
+    const lines = ['line1', 'line2', 'line3'];
+    lines.forEach(id => document.getElementById(id).classList.remove('show'));
+
+    setTimeout(() => document.getElementById('line1').classList.add('show'), 300);
+    setTimeout(() => document.getElementById('line2').classList.add('show'), 1100);
+    setTimeout(() => document.getElementById('line3').classList.add('show'), 2000);
+    setTimeout(() => goTo(1), 4200);
+  }
+
+  // ============================================
+  // SECTION 2 – PERKENALAN (line reveal animation)
+  // ============================================
+  function initSection2() {
+    const lines = document.querySelectorAll('#s2 .line-reveal');
+    lines.forEach(l => {
+      l.style.animation = 'none';
+      l.offsetHeight; // reflow
+      l.style.animation = '';
+    });
+  }
+
+  // ============================================
+  // SECTION 3 – APOLOGY LOGIC
+  // ============================================
+  let gamauSize = 1;   // scale factor for "gamau" button
+  let gamauClicks = 0;
+
+  function onGamau() {
+    gamauClicks++;
+    const btn = document.getElementById('btn-gamau');
+
+    if (gamauClicks <= 4) {
+      // Shrink button
+      gamauSize = Math.max(0.45, gamauSize - 0.13);
+      btn.style.transform = `scale(${gamauSize})`;
+      btn.style.opacity = gamauSize;
+      btn.classList.add('wiggle');
+      setTimeout(() => btn.classList.remove('wiggle'), 400);
+    } else {
+      // Move to random position inside the button area
+      const area = document.getElementById('apology-btn-area');
+      const areaRect = area.getBoundingClientRect();
+      const btnRect = btn.getBoundingClientRect();
+      const maxX = areaRect.width - btnRect.width * gamauSize - 20;
+      const maxY = areaRect.height - btnRect.height * gamauSize - 20;
+      const rx = Math.random() * maxX;
+      const ry = Math.random() * maxY;
+
+      btn.style.position = 'absolute';
+      btn.style.left = rx + 'px';
+      btn.style.top = ry + 'px';
+      btn.style.margin = '0';
+      btn.style.transform = `scale(${gamauSize})`;
+      btn.style.transformOrigin = 'top left';
+      btn.style.transition = 'left 0.25s, top 0.25s, transform 0.25s';
+    }
+  }
+
+  function onMaafin() {
+    // Show popup
+    const popup = document.getElementById('popup-maafin');
+    popup.classList.add('show');
+    triggerConfetti();
+
+    // Auto close + go next
+    setTimeout(() => {
+      popup.classList.remove('show');
+      goTo(3); // game section
+    }, 2200);
+  }
+
+  // ============================================
+  // CONFETTI
+  // ============================================
+  function triggerConfetti() {
+    const container = document.getElementById('confetti-container');
+    const colors = ['#a8d8ff','#ff8fab','#ffd166','#ffffff','#7ec8f5','#b5ead7'];
+    const shapes = ['square','circle'];
+
+    for (let i = 0; i < 80; i++) {
+      const piece = document.createElement('div');
+      piece.classList.add('confetti-piece');
+      const color = colors[Math.floor(Math.random() * colors.length)];
+      const shape = shapes[Math.floor(Math.random() * shapes.length)];
+      const left = Math.random() * 100;
+      const duration = 1.5 + Math.random() * 2;
+      const size = 8 + Math.random() * 10;
+      const delay = Math.random() * 0.8;
+
+      piece.style.cssText = `
+        left:${left}%;
+        width:${size}px; height:${size}px;
+        background:${color};
+        border-radius:${shape === 'circle' ? '50%' : '3px'};
+        animation-duration:${duration}s;
+        animation-delay:${delay}s;
+      `;
+      container.appendChild(piece);
+      setTimeout(() => piece.remove(), (duration + delay + 0.5) * 1000);
+    }
+  }
+
+  // ============================================
+  // SECTION 4 – MINI GAME (Catch the Heart)
+  // ============================================
+  let gameScore = 0;
+  let gameTime  = 15;
+  let gameRunning = false;
+  let gameTimerID = null;
+  let heartSpawnID = null;
+
+  function initGame() {
+    // Reset state
+    gameScore = 0;
+    gameTime  = 15;
+    gameRunning = false;
+    clearInterval(gameTimerID);
+    clearInterval(heartSpawnID);
+
+    document.getElementById('score-display').textContent = '0';
+    document.getElementById('timer-display').textContent = '15';
+    document.getElementById('timer-bar').style.width = '100%';
+
+    const area = document.getElementById('game-area');
+    // Clear old hearts
+    area.querySelectorAll('.heart-drop').forEach(h => h.remove());
+
+    // Show start message
+    document.getElementById('game-start-msg').style.display = 'flex';
+    document.getElementById('game-end-msg').style.display = 'none';
+
+    // Click anywhere in area to start
+    area.onclick = startGame;
+    area.ontouchstart = gameAreaTouch;
+  }
+
+  function gameAreaTouch(e) {
+    if (!gameRunning) { startGame(); return; }
+    // handled per-heart touch
+  }
+
+  function startGame() {
+    if (gameRunning) return;
+    gameRunning = true;
+
+    const area = document.getElementById('game-area');
+    document.getElementById('game-start-msg').style.display = 'none';
+    area.onclick = null;
+
+    // Spawn hearts
+    heartSpawnID = setInterval(spawnHeart, 900);
+    spawnHeart(); // immediate first
+
+    // Timer countdown
+    gameTimerID = setInterval(() => {
+      gameTime--;
+      document.getElementById('timer-display').textContent = gameTime;
+      document.getElementById('timer-bar').style.width = (gameTime / 15 * 100) + '%';
+
+      if (gameTime <= 0) {
+        clearInterval(gameTimerID);
+        clearInterval(heartSpawnID);
+        gameRunning = false;
+        endGame();
+      }
+    }, 1000);
+  }
+
+  function spawnHeart() {
+    const area = document.getElementById('game-area');
+    const areaW = area.clientWidth;
+    const h = document.createElement('div');
+    h.classList.add('heart-drop');
+    h.textContent = ['❤️','💙','💕','💖'][Math.floor(Math.random()*4)];
+
+    const leftPct = 5 + Math.random() * 80;
+    const dur = 1.8 + Math.random() * 1.4;
+    h.style.left = leftPct + '%';
+    h.style.animationDuration = dur + 's';
+
+    h.addEventListener('click', () => catchHeart(h));
+    h.addEventListener('touchstart', (e) => { e.stopPropagation(); catchHeart(h); }, {passive:true});
+
+    area.appendChild(h);
+    setTimeout(() => { if (h.parentNode) h.remove(); }, dur * 1000 + 100);
+  }
+
+  function catchHeart(el) {
+    if (!gameRunning) return;
+    el.remove();
+    gameScore++;
+    document.getElementById('score-display').textContent = gameScore;
+
+    // Score pop animation
+    const pop = document.createElement('div');
+    pop.textContent = '+1';
+    pop.style.cssText = `
+      position:absolute; top:30%; left:45%;
+      font-weight:900; font-size:1.4rem;
+      color:var(--accent); pointer-events:none;
+      animation: floatUp 0.7s ease forwards;
+      font-family:'Nunito',sans-serif;
+    `;
+    document.getElementById('game-area').appendChild(pop);
+    setTimeout(() => pop.remove(), 700);
+  }
+
+  function endGame() {
+    const area = document.getElementById('game-area');
+    area.querySelectorAll('.heart-drop').forEach(h => h.remove());
+
+    let msg = '';
+    if (gameScore >= 20) msg = `wow ${gameScore} hati! picell cepet banget 🔥`;
+    else if (gameScore >= 10) msg = `${gameScore} hati! good job! 💪 dikali 10 hampir setara tinggi badan`;
+    else if (gameScore >= 5) msg = `${gameScore} hati! lumayan 😄`;
+    else msg = `${gameScore} hati… next time lebih semangat ya 😅`;
+
+    document.getElementById('game-result-text').textContent = msg;
+    document.getElementById('game-end-msg').style.display = 'block';
+  }
+
+  // ============================================
+  // SECTION 5 – FUN / CATATAN
+  // ============================================
+  const catatanList = [
+    "Anak pertama, suku chaniago, asli pesel, cilengsih abis, bb 42, tb 144p, lecet dikit di sikut kiri",
+    "Suka buah manggis, kurang suka ayam selain ayam kampung, ikan gasuka kecuali lele sama tongkol",
+    "aslinya baik pengertian💙, tapi ketutup gengsiannyaa",
+    "suka lupa naro barang, apalagi yang ada di tangan suka kebuang",
+    "BANGUN TIDUR JUTEKK BANGET SI KECIL INII",
+    "Gabisa kena debu kayak akuu",
+    "Nama panggilannya picel (selpi boncel) MBG (my bini gueh). suka gaaa",
+    "punya boneka Doraemon namanya bubu💙",
+    "gabisa minum kopi",
+  ];
+
+  let catatanIdx = 0;
+  let catatanClicks = 0; // next button clicks
+
+  function initCatatan() {
+    catatanIdx = 0;
+    catatanClicks = 0;
+    updateCatatanText(false);
+  }
+
+  function updateCatatanText(animate) {
+    const el = document.getElementById('catatan-text');
+    const counter = document.getElementById('catatan-counter');
+
+    if (animate) {
+      el.classList.add('fade-out');
+      setTimeout(() => {
+        el.textContent = catatanList[catatanIdx];
+        el.classList.remove('fade-out');
+        el.classList.add('fade-in');
+        counter.textContent = `${catatanIdx + 1} / ${catatanList.length}`;
+        setTimeout(() => el.classList.remove('fade-in'), 350);
+      }, 350);
+    } else {
+      el.textContent = catatanList[catatanIdx];
+      counter.textContent = `${catatanIdx + 1} / ${catatanList.length}`;
+    }
+  }
+
+  function nextCatatan() {
+    catatanClicks++;
+
+    // After 7 clicks show teaser
+    if (catatanClicks === 7) {
+      const el = document.getElementById('catatan-text');
+      el.classList.add('fade-out');
+      setTimeout(() => {
+        el.textContent = "kepo yaa selanjutnya apa 😏 next kita lanjutin main ini yaa";
+        el.classList.remove('fade-out');
+        el.classList.add('fade-in');
+        document.getElementById('catatan-counter').textContent = '';
+        setTimeout(() => el.classList.remove('fade-in'), 350);
+      }, 350);
+
+      setTimeout(() => goTo(5), 2800);
+      return;
+    }
+
+    catatanIdx = (catatanIdx + 1) % catatanList.length;
+    updateCatatanText(true);
+  }
+
+  function onCatatanReact(type) {
+    const popup = document.getElementById('popup-fun');
+    const emojiEl = document.getElementById('popup-fun-emoji');
+    const textEl = document.getElementById('popup-fun-text');
+
+    if (type === 'ya') {
+      emojiEl.textContent = '😌';
+      textEl.textContent = 'tuh kan aku tau 😌';
+    } else {
+      emojiEl.textContent = '😏';
+      textEl.textContent = 'hmm masa sih 😏';
+    }
+
+    popup.classList.add('show');
+    setTimeout(() => popup.classList.remove('show'), 1800);
+  }
+
+  // ============================================
+  // SECTION 6 – TODAY PLAN
+  // ============================================
+  function selectTime(time, btn) {
+    selectedTime = time;
+    document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+
+    const confirm = document.getElementById('time-confirm');
+    confirm.textContent = `oke, jam ${time} ya! 🎯`;
+    confirm.style.display = 'block';
+
+    document.getElementById('btn-go-countdown').style.display = 'inline-flex';
+  }
+
+  function goToCountdown() {
+    if (!selectedTime) { alert('pilih jamnya dulu ya! 😄'); return; }
+    goTo(6);
+  }
+
+  // ============================================
+  // SECTION 7 – COUNTDOWN
+  // ============================================
+  function initCountdown() {
+    if (countdownInterval) clearInterval(countdownInterval);
+
+    const label = document.getElementById('cd-target-label');
+    label.textContent = `menuju jam ${selectedTime || '20:00'}`;
+
+    document.getElementById('cd-done-msg').style.display = 'none';
+    tickCountdown();
+    countdownInterval = setInterval(tickCountdown, 1000);
+  }
+
+  function tickCountdown() {
+    const now = new Date();
+    const target = selectedTime || '20:00';
+    const [th, tm] = target.split(':').map(Number);
+
+    let targetDate = new Date();
+    targetDate.setHours(th, tm, 0, 0);
+
+    // If already passed, set to tomorrow
+    if (targetDate <= now) targetDate.setDate(targetDate.getDate() + 1);
+
+    const diff = Math.max(0, Math.floor((targetDate - now) / 1000));
+
+    const h = Math.floor(diff / 3600);
+    const m = Math.floor((diff % 3600) / 60);
+    const s = diff % 60;
+
+    document.getElementById('cd-h').textContent = String(h).padStart(2,'0');
+    document.getElementById('cd-m').textContent = String(m).padStart(2,'0');
+    document.getElementById('cd-s').textContent = String(s).padStart(2,'0');
+
+    if (diff === 0) {
+      clearInterval(countdownInterval);
+      document.getElementById('cd-done-msg').style.display = 'block';
+    }
+  }
+
+  // ============================================
+  // SECTION 8 – CLOSING (floating hearts)
+  // ============================================
+  function initClosing() {
+    const container = document.getElementById('float-hearts-bg');
+    container.innerHTML = '';
+
+    const emojis = ['💙','💕','❤️','🥺','✨','💫'];
+    for (let i = 0; i < 18; i++) {
+      const h = document.createElement('div');
+      h.classList.add('fheart');
+      h.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+      const left = 3 + Math.random() * 90;
+      const dur  = 4 + Math.random() * 5;
+      const delay = Math.random() * 5;
+      const size = 1.2 + Math.random() * 1.6;
+      h.style.cssText = `
+        left:${left}%;
+        bottom:-40px;
+        font-size:${size}rem;
+        animation-duration:${dur}s;
+        animation-delay:${delay}s;
+      `;
+      container.appendChild(h);
+    }
+  }
+
+  // ============================================
+  // INIT APP
+  // ============================================
+  function init() {
+    updateDots();
+    const sections = document.querySelectorAll('.section');
+    sections[0].classList.add('active');
+    onSectionEnter(0);
+  }
+
+  document.addEventListener('DOMContentLoaded', init);
+</script>
+
+</body>
+</html>
